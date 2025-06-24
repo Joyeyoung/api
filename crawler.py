@@ -1,3 +1,4 @@
+# crawler.py
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -8,7 +9,7 @@ PARAMS = {
     "rows": 15,
     "cpage": 1,
     "schWntyAt": "Y",
-    "schAreaDetailCodes": "6450000",  # 서울 지역 코드
+    "schAreaDetailCodes": "6450000",
     "schEndAt": "Y"
 }
 
@@ -18,25 +19,21 @@ def crawl_bizinfo():
     soup = BeautifulSoup(res.text, "html.parser")
 
     items = []
-    rows = soup.select(".table_list tbody tr")
-
-    for row in rows:
+    for row in soup.select(".table_list tbody tr"):
         cols = row.find_all("td")
         if len(cols) < 5:
             continue
         title_tag = cols[1].find("a")
-        item = {
+        items.append({
             "title": title_tag.text.strip(),
             "summary": f"{cols[2].text.strip()} 분야 공고",
             "status": cols[0].text.strip(),
             "category": cols[2].text.strip(),
             "period": cols[4].text.strip(),
             "url": BASE_URL + title_tag["href"]
-        }
-        items.append(item)
+        })
 
-    # 저장
-    with open("public/notices.json", "w", encoding="utf-8") as f:
+    with open("notices.json", "w", encoding="utf-8") as f:
         json.dump(items, f, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
