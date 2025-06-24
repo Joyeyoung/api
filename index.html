@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>서울 지역 지원사업 공고</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50">
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <h1 class="text-xl font-bold text-gray-900">서울 지역 지원사업 공고</h1>
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <input type="text" placeholder="검색어를 입력하세요" class="w-64 pl-10 pr-4 py-2 rounded-button border border-gray-200 focus:outline-none focus:border-primary" />
+              <div class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400">
+                <i class="ri-search-line"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-6 flex flex-wrap gap-4 items-center justify-between">
+        <div class="flex gap-4">
+          <select class="px-4 py-2 rounded-button border border-gray-200 bg-white">
+            <option>전체 분야</option>
+            <option>창업</option>
+            <option>기술개발</option>
+            <option>마케팅</option>
+            <option>인력지원</option>
+          </select>
+          <select class="px-4 py-2 rounded-button border border-gray-200 bg-white">
+            <option>진행상태</option>
+            <option>진행중</option>
+            <option>마감</option>
+          </select>
+        </div>
+        <div class="flex gap-4">
+          <button class="px-4 py-2 rounded-button bg-white border border-gray-200 text-gray-700">최신순</button>
+          <button class="px-4 py-2 rounded-button bg-white border border-gray-200 text-gray-700">조회순</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- JS로 채워짐 -->
+      </div>
+    </main>
+
+    <script>
+      async function loadNotices() {
+        const res = await fetch('notices.json');
+        const data = await res.json();
+        const container = document.querySelector(".grid");
+        container.innerHTML = data.map(n => `
+          <article class="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">${n.status}</span>
+                <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">${n.category}</span>
+              </div>
+              <h3 class="text-lg font-semibold mb-2">${n.title}</h3>
+              <p class="text-gray-600 text-sm mb-4">${n.summary}</p>
+              <div class="flex items-center justify-between text-sm text-gray-500">
+                <span>신청기간: ${n.period}</span>
+                <a href="${n.url}" target="_blank" class="text-primary hover:underline">자세히 보기</a>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+      document.addEventListener("DOMContentLoaded", loadNotices);
+    </script>
+  </body>
+</html>
