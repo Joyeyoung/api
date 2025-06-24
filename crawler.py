@@ -1,4 +1,3 @@
-# crawler.py
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -9,7 +8,7 @@ PARAMS = {
     "rows": 15,
     "cpage": 1,
     "schWntyAt": "Y",
-    "schAreaDetailCodes": "6450000",
+    "schAreaDetailCodes": "6450000",  # 서울 지역 코드
     "schEndAt": "Y"
 }
 
