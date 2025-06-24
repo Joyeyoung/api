@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>최근 적합 공고</title>
+  <title>지역사업 공고</title>
   <style>
     body {
       font-family: 'Noto Sans KR', sans-serif;
@@ -64,7 +64,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-  <div class="section-title">최근 적합 공고</div>
+  <div class="section-title">지역 적합 공고</div>
   <div id="notice-container"></div>
 
   <script>
@@ -82,7 +82,7 @@
                   <span class="badge">${n.score}</span>
                 </div>
                 <div class="notice-title">${n.title}</div>
-                <div class="notice-meta">마감일: ${n.deadline} | 기관: ${n.organization} | 키워드: ${n.keywords}</div>
+                <div class="notice-meta">마감일: ${n.deadline} | 기관: ${n.organization}</div>
                 <div class="icon-links">
                   <a href="${n.doc}" target="_blank"><span>📄</span></a>
                   <a href="${n.link}" target="_blank"><span>🔗</span></a>

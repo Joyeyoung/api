@@ -3,29 +3,32 @@ import cheerio from 'cheerio';
 
 export default async function handler(req, res) {
   try {
-    const motieData = await axios.get('https://www.motie.go.kr/motie/ne/announce/notice');
-    const $ = cheerio.load(motieData.data);
+    const targetURL = 'https://www.bizinfo.go.kr/web/lay1/bbs/S1T122C128/AS/74/list.do?rows=15&cpage=1&schAreaDetailCodes=6450000&schEndAt=Y';
+    const { data } = await axios.get(targetURL);
+    const $ = cheerio.load(data);
     const results = [];
 
-    $('.board_list tbody tr').slice(0, 5).each((i, el) => {
-      const title = $(el).find('td.title a').text().trim();
-      const link = 'https://www.motie.go.kr' + $(el).find('td.title a').attr('href');
-      const date = $(el).find('td').last().text().trim();
+    $('.p-table__list tbody tr').each((i, el) => {
+      const cols = $(el).find('td');
+      const title = cols.eq(1).text().trim();
+      const link = 'https://www.bizinfo.go.kr' + cols.eq(1).find('a').attr('href');
+      const organization = cols.eq(2).text().trim();
+      const deadline = cols.eq(4).text().trim();
 
       results.push({
-        type: 'MOTIE',
-        score: '적합도 중간',
         title,
-        deadline: date,
-        organization: '산업통상자원부',
+        organization,
+        deadline,
+        type: '지역사업',
+        score: '중간',
         keywords: '',
-        doc: '#',
-        link
+        doc: link,
+        link: link
       });
     });
 
     res.status(200).json(results);
-  } catch (e) {
-    res.status(500).json({ error: '크롤링 실패', details: e.message });
+  } catch (err) {
+    res.status(500).json({ error: '크롤링 실패', detail: err.message });
   }
 }
