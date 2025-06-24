@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>정부지원사업 공고</title>
+  <script>
+    async function loadNotices() {
+      const res = await fetch('/api/getNotices');
+      const data = await res.json();
+      document.getElementById('notices').innerHTML =
+        data.map(n => `<li>${n.title} - ${n.date}</li>`).join('');
+    }
+    window.onload = loadNotices;
+  </script>
+</head>
+<body>
+  <h1>정부지원사업 공고</h1>
+  <ul id="notices"></ul>
+</body>
+</html>
